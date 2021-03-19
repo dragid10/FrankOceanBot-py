@@ -1,0 +1,5 @@
+python-decouple==3.4        # https://pypi.org/project/python-decouple/
+python-dotenv==0.15.0       # https://pypi.org/project/python-dotenv/
+prodict==0.8.16             # https://pypi.org/project/prodict/
+spotipy==2.17.1             # https://pypi.org/project/spotipy/
+wheel
