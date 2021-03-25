@@ -1,6 +1,9 @@
 loguru==0.5.3               # https://pypi.org/project/loguru/
+lyricsgenius==3.0.0         # https://pypi.org/project/lyricsgenius/
 python-decouple==3.4        # https://pypi.org/project/python-decouple/
 python-dotenv==0.15.0       # https://pypi.org/project/python-dotenv/
 prodict==0.8.16             # https://pypi.org/project/prodict/
+redis==3.5.3                # https://pypi.org/project/redis/
 spotipy==2.17.1             # https://pypi.org/project/spotipy/
+tweepy==3.10.0              # https://pypi.org/project/tweepy/
 wheel
