@@ -1,7 +1,7 @@
 from typing import Dict
 
-import spotipy
 from prodict import Prodict
+from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 
 from util import cfg, base_logger
@@ -20,7 +20,7 @@ class SpotifyService:
 
     def __init__(self):
         # Create spotify client to perform activities on
-        self._client = spotipy.Spotify(
+        self._client = Spotify(
             auth_manager=SpotifyClientCredentials(client_id=cfg.SPOTIFY_CLIENT_ID,
                                                   client_secret=cfg.SPOTIFY_CLIENT_SECRET))
 
@@ -76,12 +76,19 @@ class SpotifyService:
             if "edit" in track["name"].casefold():
                 continue
 
-            # Try to not include (Side) part of name, to make genius lookups easier
             track_name = track["name"]
+            track_id = track["id"]
+            artist = track["artists"][0]["name"]
+
+            # Try to not include (Side) part of name, to make genius lookups easier
             end_index = len(track_name)
             if track_name.find("(Side") != -1:
                 end_index = track_name.find("(Side")
 
-            tracks.append(Prodict.from_dict({"track_name": track_name[:end_index].strip(), "track_id": track["id"]}))
+            tracks.append(Prodict.from_dict(
+                {"track_name": track_name[:end_index].strip(),
+                 "track_id": track_id,
+                 "artist": artist,
+                 }))
 
         return tracks

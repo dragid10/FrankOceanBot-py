@@ -1,8 +1,11 @@
 import random
 
-from app.services import spotify_client, genius_service, twitter_service
+import genius_service
+import twitter_service
+import spotify_client
 
-if __name__ == '__main__':
+
+def handler(event, context):
     # Init all api clients
     spotibot = spotify_client.SpotifyService()
     geniusbot = genius_service.GeniusClient()
@@ -15,7 +18,7 @@ if __name__ == '__main__':
     random_song = random.choice(songs)
 
     # Get lyrics for random song
-    lyrics = geniusbot.get_lyrics(random_song.track_name)
+    lyrics = geniusbot.get_lyrics(random_song.track_name, random_song.artist)
 
     # Get random pair of lyrics from song
     lyric_index = random.randint(0, len(lyrics) - 2)
@@ -32,3 +35,7 @@ if __name__ == '__main__':
         status = twitterbot.tweet(tweet_lyrics)
         retry_limit += 1
     retry_limit = 0
+
+
+if __name__ == '__main__':
+    handler(None, None)

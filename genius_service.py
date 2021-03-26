@@ -1,6 +1,6 @@
 from typing import List
 
-import lyricsgenius
+from lyricsgenius import Genius
 from lyricsgenius.song import Song
 
 from util import cfg, base_logger
@@ -10,7 +10,7 @@ logger = base_logger.get_logger()
 
 class GeniusClient:
     def __init__(self):
-        self.genius_client = lyricsgenius.Genius(cfg.GENIUS_ACCESS_TOKEN)
+        self.genius_client = Genius(cfg.GENIUS_ACCESS_TOKEN)
         self.genius_client.remove_section_headers = True  # Remove section headers (e.g. [Chorus]) from lyrics when searching
         self.genius_client.verbose = False  # Turn off status messages
         self.genius_client.skip_non_songs = True  # Exclude hits thought to be non-songs (e.g. track lists)
