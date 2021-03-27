@@ -16,10 +16,14 @@ class GeniusClient:
         self.genius_client.skip_non_songs = True  # Exclude hits thought to be non-songs (e.g. track lists)
         self.genius_client.excluded_terms = ["Clean", "(Side A)", "(Side B)"]  # Exclude songs with these words in their title
 
-    def get_lyrics(self, song, artist=None) -> List[str]:
-        if not artist:
-            lyrics: Song = self.genius_client.search_song(title=song)
-        else:
-            lyrics: Song = self.genius_client.search_song(title=song, artist=artist)
+    def get_lyrics(self, song: str, artist: str=None) -> List[str]:
+        try:
+            if not artist:
+                lyrics: Song = self.genius_client.search_song(title=song)
+            else:
+                lyrics: Song = self.genius_client.search_song(title=song, artist=artist)
 
-        return lyrics.lyrics.strip().replace("\n\n", "\n").split("\n")
+            logger.debug(f"Got lyrics for song {song}")
+            return lyrics.lyrics.strip().replace("\n\n", "\n").split("\n")
+        except Exception as ex:
+            logger.exception(f"Caught an exception getting lyrics: {ex}")

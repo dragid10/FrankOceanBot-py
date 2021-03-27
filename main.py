@@ -1,3 +1,4 @@
+from loguru import logger
 import newrelic.agent
 from util import cfg
 newrelic.agent.initialize("newrelic.ini")
@@ -8,7 +9,7 @@ import genius_service
 import twitter_service
 import spotify_client
 
-
+@newrelic.agent.background_task()
 def handler(event, context):
     # Init all api clients
     spotibot = spotify_client.SpotifyService()
@@ -29,12 +30,14 @@ def handler(event, context):
     lyric1 = lyrics[lyric_index]
     lyric2 = lyrics[lyric_index + 1]
     tweet_lyrics = f"{lyric1}\n{lyric2}"
+    logger.debug(f"Extraced 2 random lyrics")
 
     # Actually tweet  Lyrics
     status = False
     retry_limit = 0
 
     # Try to send tweet x times before ultimately failing
+    logger.debug(f"Tweeting lyrics")
     while not status and retry_limit < 2:
         status = twitterbot.tweet(tweet_lyrics)
         retry_limit += 1

@@ -41,6 +41,8 @@ class SpotifyService:
         # TODO - Store albums in a database (go to cache instead of hitting spotify each time)
         # self.db.store_albums(albums=albums)
 
+        logger.debug(f"Succesfully retrieved artist songs")
+
         flat_track_list = []
         for albs in albums.values():
             for song in albs.tracks:
