@@ -13,3 +13,6 @@ TWITTER_TOKEN_SECRET = config("twitter_token_secret")
 
 # Genius Configs
 GENIUS_ACCESS_TOKEN = config("genius_token")
+
+# New Relic Configs
+NEW_RELIC_KEY = config("nr_license_key")

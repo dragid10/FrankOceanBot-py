@@ -1,5 +1,9 @@
-import random
+import newrelic.agent
+from util import cfg
+newrelic.agent.initialize("newrelic.ini")
+newrelic.agent.global_settings().license_key=cfg.NEW_RELIC_KEY
 
+import random
 import genius_service
 import twitter_service
 import spotify_client
