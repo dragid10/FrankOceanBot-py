@@ -1,3 +1,4 @@
+import newrelic.agent
 from typing import List
 
 from lyricsgenius import Genius
@@ -16,7 +17,9 @@ class GeniusClient:
         self.genius_client.skip_non_songs = True  # Exclude hits thought to be non-songs (e.g. track lists)
         self.genius_client.excluded_terms = ["Clean", "(Side A)", "(Side B)"]  # Exclude songs with these words in their title
 
-    def get_lyrics(self, song: str, artist: str=None) -> List[str]:
+    @newrelic.agent.background_task()
+    @newrelic.agent.function_trace()
+    def get_lyrics(self, song: str, artist: str = None) -> List[str]:
         try:
             if not artist:
                 lyrics: Song = self.genius_client.search_song(title=song)

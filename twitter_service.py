@@ -1,3 +1,4 @@
+import newrelic.agent
 import tweepy
 from tweepy import Status
 
@@ -15,6 +16,8 @@ class TwitterClient:
 
         self.client = tweepy.API(auth)
 
+    @newrelic.agent.background_task()
+    @newrelic.agent.function_trace()
     def tweet(self, lyrics: str) -> bool:
         # Do a pre-check if the lyrics go over the twitter char limit
         if len(lyrics) > self.__TWEET_CHAR_LIMIT:

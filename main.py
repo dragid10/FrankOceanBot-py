@@ -1,13 +1,18 @@
-from loguru import logger
+import logging
+
 import newrelic.agent
 from util import cfg
-newrelic.agent.initialize("newrelic.ini")
-newrelic.agent.global_settings().license_key=cfg.NEW_RELIC_KEY
 
+newrelic.agent.global_settings().license_key = cfg.NEW_RELIC_KEY
+newrelic.agent.initialize(config_file="newrelic.ini", environment="production", log_file="stderr",
+                          log_level=logging.DEBUG)
+
+from loguru import logger
 import random
 import genius_service
 import twitter_service
 import spotify_client
+
 
 @newrelic.agent.background_task()
 def handler(event, context):
@@ -45,4 +50,6 @@ def handler(event, context):
 
 
 if __name__ == '__main__':
-    handler(None, None)
+    app = newrelic.agent.register_application(timeout=10.0)
+    with newrelic.agent.BackgroundTask(app, name="handler"):
+        handler(None, None)

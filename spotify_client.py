@@ -1,3 +1,4 @@
+import newrelic.agent
 from typing import Dict
 
 from prodict import Prodict
@@ -26,6 +27,7 @@ class SpotifyService:
 
         # self.db = ElastiCacheService()
 
+    @newrelic.agent.function_trace()
     def get_all_artist_songs(self) -> list:
         albums = {}
 
@@ -49,6 +51,7 @@ class SpotifyService:
                 flat_track_list.append(song)
         return flat_track_list
 
+    @newrelic.agent.function_trace()
     def __retrieve_albums(self, alb_type: str = "album") -> dict:
         albums: Dict[str, str] = {}
         results = self._client.artist_albums(cfg.ARTIST_ID, album_type=alb_type, country="US")
@@ -71,6 +74,7 @@ class SpotifyService:
 
         return albums
 
+    @newrelic.agent.function_trace()
     def __retrieve_songs(self, album_id: str) -> list:
         tracks, results = [], self._client.album_tracks(album_id)
 
