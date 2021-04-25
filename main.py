@@ -25,7 +25,7 @@ def handler(event, context):
     songs = spotibot.get_all_artist_songs()
 
     # Choose random song to get lyrics for
-    random.seed(datetime.now())
+    random.seed(datetime.now().timestamp())
     random_song = random.choice(songs)
 
     # Get lyrics for random song
