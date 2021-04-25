@@ -1,11 +1,11 @@
 import logging
+from datetime import datetime
 
 import newrelic.agent
 from util import cfg
 
 newrelic.agent.global_settings().license_key = cfg.NEW_RELIC_KEY
-newrelic.agent.initialize(config_file="newrelic.ini", environment="production", log_file="stderr",
-                          log_level=logging.DEBUG)
+# newrelic.agent.initialize(config_file="newrelic.ini", environment="production", log_file="stderr", log_level=logging.DEBUG)
 
 from loguru import logger
 import random
@@ -25,6 +25,7 @@ def handler(event, context):
     songs = spotibot.get_all_artist_songs()
 
     # Choose random song to get lyrics for
+    random.seed(datetime.now())
     random_song = random.choice(songs)
 
     # Get lyrics for random song

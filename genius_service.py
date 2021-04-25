@@ -20,6 +20,8 @@ class GeniusClient:
     @newrelic.agent.background_task()
     @newrelic.agent.function_trace()
     def get_lyrics(self, song: str, artist: str = None) -> List[str]:
+        if song == "End" and "Frank Ocean" in artist:
+            song = "End/Golden Girl"
         try:
             if not artist:
                 lyrics: Song = self.genius_client.search_song(title=song)

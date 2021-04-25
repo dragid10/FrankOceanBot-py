@@ -1,3 +1,5 @@
+import re
+
 import newrelic.agent
 from typing import Dict
 
@@ -58,18 +60,22 @@ class SpotifyService:
 
         # Add all results (album_name: album_id) from first set to dict
         for item in results["items"]:
-            # Don't store edited / clean versions of songs
-            if "edit" in item["name"].casefold():
-                continue
-            albums[item["name"]] = item["id"]
+            # Check if the album already exits in the dict (solves slightly different album titles for same album)
+            album_name = item["name"]
+            if "(Solo)" in album_name:
+                stripped_album_name = album_name.strip()
+            else:
+                paren_regex_str = r"\((?!(Solo)$).+\)$"
+                parenth_reg = re.compile(paren_regex_str)
+                stripped_album_name = re.sub(parenth_reg, "", album_name)
+                stripped_album_name = stripped_album_name.strip()
+
+            albums[stripped_album_name] = item["id"]
 
         # Just get the name and id of the album
         while results["next"]:
             results = self._client.next(results)
             for item in results["items"]:
-                # Don't store edited / clean versions of songs
-                if "edit" in item["name"].casefold():
-                    continue
                 albums[item["name"]] = item["id"]
 
         return albums
@@ -79,9 +85,6 @@ class SpotifyService:
         tracks, results = [], self._client.album_tracks(album_id)
 
         for track in results["items"]:
-            if "edit" in track["name"].casefold():
-                continue
-
             track_name = track["name"]
             track_id = track["id"]
             artist = track["artists"][0]["name"]
