@@ -26,6 +26,10 @@ def handler(event, context):
 
     # Choose random song to get lyrics for
     random.seed(datetime.now().timestamp())
+
+    # Shuffle array a couple of times before getting a random song
+    for i in range(random.randint(1, 120)):
+        random.shuffle(songs)
     random_song = random.choice(songs)
 
     # Get lyrics for random song
@@ -36,7 +40,7 @@ def handler(event, context):
     lyric1 = lyrics[lyric_index]
     lyric2 = lyrics[lyric_index + 1]
     tweet_lyrics = f"{lyric1}\n{lyric2}"
-    logger.debug(f"Extraced 2 random lyrics")
+    logger.debug(f"Extracted 2 random lyrics")
 
     # Actually tweet  Lyrics
     status = False
